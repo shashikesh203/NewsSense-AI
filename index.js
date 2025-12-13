@@ -7,7 +7,7 @@ const PORT = 4000;
 app.use(express.json());
 
 // root route
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.send("Express server is running 🚀");
 });
 
