@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import userChatRoute from "./routes/userChatRoute";
 
 const app = express();
 const PORT: number = process.env.PORT ? Number(process.env.PORT) : 4000;
@@ -18,6 +19,9 @@ app.get("/api/health", (_req: Request, res: Response) => {
     uptime: process.uptime(),
   });
 });
+
+// user chat routes
+app.use("/api/chat", userChatRoute);
 
 // start server
 app.listen(PORT, () => {

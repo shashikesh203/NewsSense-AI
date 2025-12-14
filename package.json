@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/genai": "^1.33.0",
     "express": "^5.2.1"
   },
   "devDependencies": {
