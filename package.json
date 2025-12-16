@@ -14,7 +14,13 @@
   "license": "ISC",
   "dependencies": {
     "@google/genai": "^1.33.0",
-    "express": "^5.2.1"
+    "@langchain/core": "^1.1.5",
+    "@langchain/google-genai": "^2.1.0",
+    "@langchain/pinecone": "^1.0.1",
+    "@langchain/textsplitters": "^1.0.1",
+    "@pinecone-database/pinecone": "^5.1.2",
+    "express": "^5.2.1",
+    "fs": "^0.0.1-security"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

@@ -1,5 +1,5 @@
 import { GoogleGenAI } from "@google/genai";
 
-const geminiClient = new GoogleGenAI({apiKey: "AIzaSyCxymRMYNiubF0gnWDDVIY8f2H43CtzvPY"});
+const geminiClient = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY });
 
 export default geminiClient
