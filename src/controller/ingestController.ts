@@ -27,8 +27,8 @@ export const ingestNews = async (_req: Request, res: Response) => {
       );
 
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 500,
-      chunkOverlap: 50,
+      chunkSize: 1100,
+      chunkOverlap: 200,
     });
 
     const chunkedDocs = await splitter.splitDocuments(docs);
@@ -41,7 +41,7 @@ export const ingestNews = async (_req: Request, res: Response) => {
     res.json({
       success: true,
       chunks: chunkedDocs.length,
-      message: "News ingested successfully 🚀",
+      message: "News ingested successfully",
     });
   } catch (error) {
     console.error(error);
