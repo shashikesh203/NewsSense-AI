@@ -2,13 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import {
   getHistoryFromPostgres,
   deleteHistoryFromPostgres,
-} from "../lib/historyService";
+} from "../utils/helpers/historyService";
 import { HttpStatusCode } from "../utils/enums/httpStatusCode";
-import { CustomError } from "../utils/customError";
-
+import { CustomError } from "../utils/helpers/customError";
 
 // GET /history/:session_id
-export const fetchSessionHistory = async (req: Request, res: Response,next: NextFunction) => {
+export const fetchSessionHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { session_id } = req.params;
 
   try {
@@ -31,7 +34,11 @@ export const fetchSessionHistory = async (req: Request, res: Response,next: Next
 };
 
 // DELETE /history/:session_id
-export const deleteSessionHistory = async (req: Request, res: Response, next: NextFunction) => {
+export const deleteSessionHistory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const { session_id } = req.params;
 
   try {
@@ -47,8 +54,6 @@ export const deleteSessionHistory = async (req: Request, res: Response, next: Ne
         "Failed to delete history",
         HttpStatusCode.SERVICE_UNAVAILABLE
       )
-    );    
+    );
   }
 };
-
-

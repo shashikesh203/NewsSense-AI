@@ -1,15 +1,11 @@
-import prisma from "../lib/prismaClient";
+import prisma from "../../lib/prismaClient";
+import LogInteractionInterface from "../interfaces/logInteractionInterface";
 export async function logInteraction({
   sessionId,
   userQuery,
   llmResponse,
   responseTimeMs,
-}: {
-  sessionId: string;
-  userQuery: string;
-  llmResponse: string;
-  responseTimeMs: number;
-}) {
+}: LogInteractionInterface) {
   try {
     await prisma.chatLog.create({
       data: {

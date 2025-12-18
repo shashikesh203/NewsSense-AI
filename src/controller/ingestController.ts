@@ -1,14 +1,18 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import fs from "fs";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
-import { embeddings } from "../config/embeddings";
-import { pineconeIndex } from "../config/pinecone";
-import { CustomError } from "../utils/customError";
+import { embeddings } from "../lib/embeddingClient";
+import { pineconeIndex } from "../lib/pineconeClient";
+import { CustomError } from "../utils/helpers/customError";
 import { HttpStatusCode } from "../utils/enums/httpStatusCode";
 
-export const ingestNews = async (_req: Request, res: Response) => {
+export const ingestNews = async (
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const newsData = JSON.parse(fs.readFileSync("src/data/news.json", "utf-8"));
 
@@ -53,6 +57,3 @@ export const ingestNews = async (_req: Request, res: Response) => {
     );
   }
 };
-function next(arg0: CustomError) {
-  throw new Error("Function not implemented.");
-}

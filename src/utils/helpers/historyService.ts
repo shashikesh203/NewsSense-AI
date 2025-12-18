@@ -1,4 +1,4 @@
-import prisma from "./prismaClient";
+import prisma from "../../lib/prismaClient";
 
 export async function getHistoryFromPostgres({
   sessionId,
@@ -21,11 +21,10 @@ export async function deleteHistoryFromPostgres({
   sessionId: string;
 }) {
   try {
-     return prisma.chatLog.deleteMany({
+    return prisma.chatLog.deleteMany({
       where: { sessionId },
     });
   } catch (error) {
     console.log("Error while deleting history", error);
   }
- 
 }

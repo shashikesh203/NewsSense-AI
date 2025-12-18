@@ -1,7 +1,6 @@
 import redisClient, { connectRedis } from "../../lib/redisClient";
+import { CacheConfig } from "../enums/cacheConfig";
 
-const MAX_HISTORY = 5;
-const TTL_SECONDS = 60 * 60; // 1 hour
 
 export type QAItem = {
   question: string;
@@ -14,40 +13,46 @@ async function ensureRedis() {
     await connectRedis();
   }
 }
-    
+
 export async function storeLastFiveQA(
   sessionId: string,
   question: string,
   answer: string
 ) {
-  await ensureRedis(); 
-  const key = `session:${sessionId}:history`;
+  try {
+    await ensureRedis();
+    const key = `session:${sessionId}:history`;
 
-  const payload = JSON.stringify({
-    question,
-    answer,
-    timestamp: Date.now(),
-  });
+    const payload = JSON.stringify({
+      question,
+      answer,
+      timestamp: Date.now(),
+    });
 
-  await redisClient.lPush(key, payload);
-  await redisClient.lTrim(key, 0, MAX_HISTORY - 1);
-  await redisClient.expire(key, TTL_SECONDS);
+    await redisClient.lPush(key, payload);
+    await redisClient.lTrim(key, 0, CacheConfig.MAX_HISTORY - 1);
+    await redisClient.expire(key, CacheConfig.TTL_SECONDS);
+  } catch (error) {
+    console.log("error while set redis", error);
+  }
 }
 
-export async function getLastFiveQA(
-  sessionId: string
-): Promise<QAItem[]> {
-  await ensureRedis(); 
-  const key = `session:${sessionId}:history`;
+export async function getLastFiveQA(sessionId: string): Promise<QAItem[]> {
+  try {
+    await ensureRedis();
+    const key = `session:${sessionId}:history`;
 
-  const data = await redisClient.lRange(key, 0, -1);
+    const data = await redisClient.lRange(key, 0, -1);
 
-  return data.map((item) => {
-    const parsed =
-      typeof item === "string"
-        ? JSON.parse(item)
-        : JSON.parse(item.toString());
+    return data.map((item) => {
+      const parsed =
+        typeof item === "string"
+          ? JSON.parse(item)
+          : JSON.parse(item.toString());
 
-    return parsed as QAItem;
-  });
+      return parsed as QAItem;
+    });
+  } catch (error) {
+    console.log("error while get redis data", error);
+  }
 }
