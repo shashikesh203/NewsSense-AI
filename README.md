@@ -4,15 +4,17 @@ NOTE::: As I am using gemini free llm model so some time it might not generate r
 
 1. Clone the project using git: git clone https://github.com/shashikesh203/NewsSense-AI.git
 
-2. Create .env file
+2. Checkout to branch dev: git checkout -b dev
 
-3. Add these env credentials in .env file (shared on mail or you can refer to .env.example)
+3. Create .env file
 
-4. Try using aur .env specially for services running on docker as my database is in synch with the schema.
+4. Add these env credentials in .env file (shared on mail or you can refer to .env.example)
 
-5. Run command: docker compose up --build -d
+5. Try using aur .env specially for services running on docker as my database is in synch with the schema.
 
-6. Check the health route on browser http://localhost:<port>/health
+6. Run command: docker compose up --build -d
 
-7. Attached postman collection link: https://documenter.getpostman.com/view/50892866/2sB3dVNT7j
+7. Check the health route on browser http://localhost:<port>/health
+
+8. Attached postman collection link: https://documenter.getpostman.com/view/50892866/2sB3dVNT7j
 
