@@ -7,7 +7,7 @@ export type QAItem = {
   timestamp: number;
 };
 
-async function ensureRedis() {
+export async function ensureRedis() {
   if (!redisClient.isOpen) {
     await connectRedis();
   }

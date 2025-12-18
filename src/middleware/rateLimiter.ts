@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import redisClient from "../lib/redisClient";
-import { RateLimitConfig } from "../utils/enums/ratelimiterEnum";
-
+import config from "../config";
 
 export async function rateLimiter(
   req: Request,
@@ -9,29 +8,22 @@ export async function rateLimiter(
   next: NextFunction
 ) {
   try {
-    await ensureRedis();
     const ip = req.ip || "unknown";
-    const key = `rate:${ip}`;
-    const current = Number(await redisClient.incr(key));
+    const count = await redisClient.get(ip);
 
-
-    if (current === 1) {
-      await redisClient.expire(key, RateLimitConfig.WINDOW_SECONDS);
+    if (!count) {
+      await redisClient.setEx(ip, config.commonConfig.rateLimitConfig, "1");
+    } else if( Number(count) < config.commonConfig.maxRateLimit) {
+      await redisClient.incr(ip);
     }
-
-    if (current > RateLimitConfig.MAX_REQUESTS) {
+    else if (Number(count) >= (config.commonConfig.maxRateLimit -1)) {
       return res.status(429).json({
         error: "Too many requests. Please try again later.",
       });
     }
-
     next();
   } catch (err) {
     console.error("Rate limiter error:", err);
-    next(); 
+    next();
   }
 }
-function ensureRedis() {
-  throw new Error("Function not implemented.");
-}
-

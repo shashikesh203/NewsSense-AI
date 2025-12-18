@@ -6,6 +6,7 @@ import { loggerMiddleware } from "./middleware/loggerMiddleware";
 import router from "./routes";
 import config from "./config";
 import { rateLimiter } from "./middleware/rateLimiter";
+import { connectRedis } from "./lib/redisClient";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use(loggerMiddleware)
 
 app.use(rateLimiter);
+connectRedis()
 
 app.get("/health", (_req, res) => {
   res.send("Server running");
