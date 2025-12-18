@@ -5,12 +5,15 @@ import { errorHandler } from "./middleware/errorHandler";
 import { loggerMiddleware } from "./middleware/loggerMiddleware";
 import router from "./routes";
 import config from "./config";
+import { rateLimiter } from "./middleware/rateLimiter";
 
 const app = express();
 
 app.use(express.json());
 
 app.use(loggerMiddleware)
+
+app.use(rateLimiter);
 
 app.get("/health", (_req, res) => {
   res.send("Server running");

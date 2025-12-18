@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import fs from "fs";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
@@ -22,7 +21,7 @@ export const ingestNews = async (
     }
 
     const jsonString = _req.file.buffer.toString("utf-8");
-    const newsData = JSON.parse(jsonString);  
+    const newsData = JSON.parse(jsonString);
 
     const docs = newsData
       .filter((a: any) => a.content?.trim())

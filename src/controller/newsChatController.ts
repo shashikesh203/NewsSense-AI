@@ -17,7 +17,7 @@ export const chatController = async (
     await logInteraction({
       sessionId,
       userQuery,
-      llmResponse: llmResponse,
+      llmResponse: llmResponse || "model issue",
       responseTimeMs: 123,
     });
 

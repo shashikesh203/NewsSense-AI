@@ -2,7 +2,6 @@ import ai from "../../lib/geminiClient";
 import { transformQuery } from "./queryTransformer";
 import { embedQuery } from "./embedQuery";
 import { searchVector } from "./vectorSearch";
-import { history } from "./history";
 import { storeLastFiveQA } from "./llmCache";
 import UserQueryInterface from "../interfaces/userQueryInterface";
 

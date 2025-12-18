@@ -1,7 +1,6 @@
 import redisClient, { connectRedis } from "../../lib/redisClient";
 import { CacheConfig } from "../enums/cacheConfig";
 
-
 export type QAItem = {
   question: string;
   answer: string;
