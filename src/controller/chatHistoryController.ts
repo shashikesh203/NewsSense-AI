@@ -18,6 +18,12 @@ export const fetchSessionHistory = async (
     const sessionHistory = await getHistoryFromPostgres({
       sessionId: session_id,
     });
+    if (!sessionHistory) {
+      return res.status(HttpStatusCode.OK).json({
+        data: null,
+        message: `No history found for session ${session_id}`,
+      });
+    }
     res.status(HttpStatusCode.OK).json({
       data: sessionHistory,
       message: `History for session ${session_id} fetched successfully`,
@@ -42,6 +48,13 @@ export const deleteSessionHistory = async (
   const { session_id } = req.params;
 
   try {
+    const response = await getHistoryFromPostgres({ sessionId: session_id });
+    if (!response) {
+      return res.status(HttpStatusCode.NOT_FOUND).json({
+        data: null,
+        message: `No history found for session ${session_id}`,
+      });
+    }
     await deleteHistoryFromPostgres({ sessionId: session_id });
     res.json({
       data: null,

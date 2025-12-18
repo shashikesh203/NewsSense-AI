@@ -14,7 +14,15 @@ export const ingestNews = async (
   next: NextFunction
 ) => {
   try {
-    const newsData = JSON.parse(fs.readFileSync("src/data/news.json", "utf-8"));
+    if (!_req.file) {
+      return res.status(400).json({
+        success: false,
+        error: "Only JSON file is allowed",
+      });
+    }
+
+    const jsonString = _req.file.buffer.toString("utf-8");
+    const newsData = JSON.parse(jsonString);  
 
     const docs = newsData
       .filter((a: any) => a.content?.trim())

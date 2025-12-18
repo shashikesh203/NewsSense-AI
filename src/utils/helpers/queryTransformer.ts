@@ -33,7 +33,7 @@ export async function transformQuery({
       config: {
         systemInstruction: `
        You are a query rewriting expert. Based on the provided chat history, rephrase the "Follow Up user Question" into a complete, standalone question that can be understood without the chat history.
-    Only output the rewritten question and nothing else.
+       Only output the rewritten question and nothing else.
         `,
       },
     });

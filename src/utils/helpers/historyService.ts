@@ -9,6 +9,9 @@ export async function getHistoryFromPostgres({
     const sessionHistory = await prisma.chatLog.findMany({
       where: { sessionId },
     });
+    if (sessionHistory.length === 0) {
+      return false;
+    } 
     return sessionHistory;
   } catch (error) {
     console.log("Error while fetching history", error);

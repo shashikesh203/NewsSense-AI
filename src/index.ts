@@ -4,6 +4,7 @@ import express from "express";
 import { errorHandler } from "./middleware/errorHandler";
 import { loggerMiddleware } from "./middleware/loggerMiddleware";
 import router from "./routes";
+import config from "./config";
 
 const app = express();
 
@@ -19,6 +20,6 @@ app.use("/api", router);
 
 app.use(errorHandler)
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on http://localhost:${process.env.PORT}`);
+app.listen(config.commonConfig.port, () => {
+  console.log(`Server running on http://localhost:${config.commonConfig.port}`);
 });
