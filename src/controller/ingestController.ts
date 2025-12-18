@@ -27,8 +27,8 @@ export const ingestNews = async (_req: Request, res: Response) => {
       );
 
     const splitter = new RecursiveCharacterTextSplitter({
-      chunkSize: 1100,
-      chunkOverlap: 200,
+      chunkSize: 500,
+      chunkOverlap: 50,
     });
 
     const chunkedDocs = await splitter.splitDocuments(docs);

@@ -4,11 +4,12 @@ import { logInteraction } from "../utils/logInteraction";
 import { CustomError } from "../utils/customError";
 import { HttpStatusCode } from "../utils/enums/httpStatusCode";
 
+
 export const chatController = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {sessionId, userQuery} = req.body;
   
-  const llmResponse = await chat(userQuery);
+  const llmResponse = await chat({userQuery,sessionId});
 
   await logInteraction({
     sessionId,
