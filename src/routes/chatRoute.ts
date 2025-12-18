@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { chatController } from "../controller/newsChatController";
 
-const router = Router();
+const chatRoute = Router();
 
-router.post("/chat", chatController);
+chatRoute.post("/", chatController);
 
-export default router;
+export default chatRoute;

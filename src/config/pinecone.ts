@@ -1,7 +1,9 @@
 import { Pinecone } from "@pinecone-database/pinecone";
+import config from "../config";
+
 
 export const pinecone = new Pinecone();
 
 export const pineconeIndex = pinecone.Index(
-  process.env.PINECONE_INDEX_NAME!
+ config.pineConeConfig.indexName
 );

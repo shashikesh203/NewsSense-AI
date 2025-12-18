@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { ingestNews } from "../controller/ingestController";
 
-const router = Router();
+const ingestRoute = Router();
 
-router.post("/ingest", ingestNews);
+ingestRoute.post("/", ingestNews);
 
-export default router;
+export default ingestRoute;

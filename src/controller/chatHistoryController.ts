@@ -1,0 +1,54 @@
+import { Request, Response, NextFunction } from "express";
+import {
+  getHistoryFromPostgres,
+  deleteHistoryFromPostgres,
+} from "../lib/historyService";
+import { HttpStatusCode } from "../utils/enums/httpStatusCode";
+import { CustomError } from "../utils/customError";
+
+
+// GET /history/:session_id
+export const fetchSessionHistory = async (req: Request, res: Response,next: NextFunction) => {
+  const { session_id } = req.params;
+
+  try {
+    const sessionHistory = await getHistoryFromPostgres({
+      sessionId: session_id,
+    });
+    res.status(HttpStatusCode.OK).json({
+      data: sessionHistory,
+      message: `History for session ${session_id} fetched successfully`,
+    });
+  } catch (err) {
+    console.error(err);
+    next(
+      new CustomError(
+        "Failed to fetch history",
+        HttpStatusCode.SERVICE_UNAVAILABLE
+      )
+    );
+  }
+};
+
+// DELETE /history/:session_id
+export const deleteSessionHistory = async (req: Request, res: Response, next: NextFunction) => {
+  const { session_id } = req.params;
+
+  try {
+    await deleteHistoryFromPostgres({ sessionId: session_id });
+    res.json({
+      data: null,
+      message: `History for session ${session_id} deleted`,
+    });
+  } catch (err) {
+    console.error(err);
+    next(
+      new CustomError(
+        "Failed to delete history",
+        HttpStatusCode.SERVICE_UNAVAILABLE
+      )
+    );    
+  }
+};
+
+

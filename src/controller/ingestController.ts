@@ -5,12 +5,12 @@ import { Document } from "@langchain/core/documents";
 import { PineconeStore } from "@langchain/pinecone";
 import { embeddings } from "../config/embeddings";
 import { pineconeIndex } from "../config/pinecone";
+import { CustomError } from "../utils/customError";
+import { HttpStatusCode } from "../utils/enums/httpStatusCode";
 
 export const ingestNews = async (_req: Request, res: Response) => {
   try {
-    const newsData = JSON.parse(
-      fs.readFileSync("src/data/news.json", "utf-8")
-    );
+    const newsData = JSON.parse(fs.readFileSync("src/data/news.json", "utf-8"));
 
     const docs = newsData
       .filter((a: any) => a.content?.trim())
@@ -45,6 +45,14 @@ export const ingestNews = async (_req: Request, res: Response) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Ingestion failed" });
+    next(
+      new CustomError(
+        "Failed to process chat request",
+        HttpStatusCode.SERVICE_UNAVAILABLE
+      )
+    );
   }
 };
+function next(arg0: CustomError) {
+  throw new Error("Function not implemented.");
+}
