@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
+import cors from 'cors';
 import express from "express";
 import { errorHandler } from "./middleware/errorHandler";
 import { loggerMiddleware } from "./middleware/loggerMiddleware";
@@ -9,7 +10,7 @@ import { rateLimiter } from "./middleware/rateLimiter";
 import { connectRedis } from "./lib/redisClient";
 
 const app = express();
-
+app.use(cors());
 app.use(express.json());
 
 app.use(loggerMiddleware)

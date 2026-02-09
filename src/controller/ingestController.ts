@@ -68,6 +68,7 @@ await pineconeIndex.upsert(
       id: String(doc.metadata.id),
       title: String(doc.metadata.title),
       source: String(doc.metadata.source),
+      text: doc.pageContent,
     },
   }))
 );

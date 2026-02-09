@@ -10,7 +10,8 @@ export const chatController = async (
   next: NextFunction
 ) => {
   try {
-    const { sessionId, userQuery } = req.body;
+    const { userQuery } = req.body;
+    const sessionId = '123';
 
     const llmResponse = await chat({ userQuery, sessionId });
 
