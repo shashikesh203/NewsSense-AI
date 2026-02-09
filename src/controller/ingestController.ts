@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
 import { Document } from "@langchain/core/documents";
-import { PineconeStore } from "@langchain/pinecone";
 import { embeddings } from "../lib/embeddingClient";
 import { pineconeIndex } from "../lib/pineconeClient";
 import { CustomError } from "../utils/helpers/customError";
@@ -44,10 +43,38 @@ export const ingestNews = async (
 
     const chunkedDocs = await splitter.splitDocuments(docs);
 
-    await PineconeStore.fromDocuments(chunkedDocs, embeddings, {
-      pineconeIndex,
-      maxConcurrency: 5,
-    });
+    // ✅ CHANGE START (ONLY THIS)
+
+   const texts = chunkedDocs.map((doc) => doc.pageContent);
+
+const vectors = [];
+
+for (let i = 0; i < texts.length; i++) {
+  const text = texts[i];
+
+  const vec = await embeddings.embedQuery(text);
+
+  console.log("Chunk", i, "Vector Length:", vec.length);
+
+  vectors.push(vec);
+}
+
+await pineconeIndex.upsert(
+  chunkedDocs.map((doc, i) => ({
+    id: doc.metadata.id + "-" + i,
+    values: vectors[i],
+
+    metadata: {
+      id: String(doc.metadata.id),
+      title: String(doc.metadata.title),
+      source: String(doc.metadata.source),
+    },
+  }))
+);
+
+
+
+    // ✅ CHANGE END
 
     res.json({
       success: true,
